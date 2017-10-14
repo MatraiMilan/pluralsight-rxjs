@@ -1,23 +1,30 @@
 {
-    "name": "pluralsight-rxjs",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/MatraiMilan/pluralsight-rxjs.git"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/MatraiMilan/pluralsight-rxjs/issues"
-    },
-    "homepage": "https://github.com/MatraiMilan/pluralsight-rxjs#readme",
-    "dependencies": {
-        "rxjs": "^5.4.3"
-    }
+  "name": "pluralsight-rxjs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatraiMilan/pluralsight-rxjs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatraiMilan/pluralsight-rxjs/issues"
+  },
+  "homepage": "https://github.com/MatraiMilan/pluralsight-rxjs#readme",
+  "dependencies": {
+    "rxjs": "^5.4.3"
+  },
+  "devDependencies": {
+    "ts-loader": "^2.3.7",
+    "typescript": "^2.5.3",
+    "typings": "^2.1.1",
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.1"
+  }
 }
