@@ -21,10 +21,17 @@ function load(url: string) {
 
         xhr.open("GET", url);
         xhr.send();
-    }).retryWhen(retryStrategy({attempts: 3, delay: 1500}));
+    }).retryWhen(retryStrategy({ attempts: 3, delay: 1500 }));
 }
 
-function retryStrategy({attempts = 4, delay = 1000}) {
+
+function loadWithFetch(url: string) {
+    return Observable.defer(() => { //DEFER PROVIDES THE LAZY LOADING (NOTHING HAPPENS UNTILL A SUBSCRIPTION OF THIS OBSERVABLE)
+        return Observable.fromPromise(fetch(url).then(r => r.json()));
+    }).retryWhen(retryStrategy({}));
+}
+
+function retryStrategy({ attempts = 4, delay = 1000 }) {
     return function (errors) {
         return errors
             .scan((acc, val) => {
@@ -45,7 +52,7 @@ function renderMovies(movies: { title: string }[]) {
     });
 }
 
-click.flatMap(e => load("movies.json"))
+click.flatMap(e => loadWithFetch("movies.json"))
     .subscribe(
     renderMovies,
     error => console.log(`error: ${error}`),
