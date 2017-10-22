@@ -40,8 +40,6 @@ let subscription = load('moviess.json').subscribe(
     err => console.log(`error: ${err}`),
     () => console.log('complete!')
 );
-
-console.log(subscription);
 subscription.unsubscribe();
 
 

@@ -22,7 +22,7 @@ export function load(url: string) {
         return () => {
             console.log('cleanup');
             xhr.removeEventListener("load", onLoad);
-            xhr.abort() ;           
+            xhr.abort();           
         };
 
     }).retryWhen(retryStrategy({ attempts: 3, delay: 1500 }));
