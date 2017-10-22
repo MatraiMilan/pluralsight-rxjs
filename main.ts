@@ -1,47 +1,30 @@
 import { Observable/*, Observer*/ } from "rxjs";
+import {load, loadWithFetch} from "./loader.ts";
+
+//TRY OUT ERROR HANDLING
+/* let source = Observable.merge(
+    Observable.of(1),
+    Observable.from([2, 3, 4]),
+    Observable.throw(new Error("Stop!")),
+    Observable.of(5)
+).catch(e => {
+    console.log(`caught: ${e}`);
+    return Observable.of(10);
+});
+
+source.subscribe(
+    val => console.log(`value: ${val}`),
+    err => console.log(`error: ${err}`),
+    () => console.log('complete')
+    
+); */
+
 
 let output = document.getElementById("output");
 let button = document.getElementById("button");
 
 let click = Observable.fromEvent(button, "click");
 
-function load(url: string) {
-    return Observable.create(observer => {
-        let xhr = new XMLHttpRequest();
-
-        xhr.addEventListener("load", () => {
-            if (xhr.status === 200) {
-                let data = JSON.parse(xhr.responseText);
-                observer.next(data);
-                observer.complete();
-            } else {
-                observer.error(xhr.statusText);
-            }
-        });
-
-        xhr.open("GET", url);
-        xhr.send();
-    }).retryWhen(retryStrategy({ attempts: 3, delay: 1500 }));
-}
-
-
-function loadWithFetch(url: string) {
-    return Observable.defer(() => { //DEFER PROVIDES THE LAZY LOADING (NOTHING HAPPENS UNTILL A SUBSCRIPTION OF THIS OBSERVABLE)
-        return Observable.fromPromise(fetch(url).then(r => r.json()));
-    }).retryWhen(retryStrategy({}));
-}
-
-function retryStrategy({ attempts = 4, delay = 1000 }) {
-    return function (errors) {
-        return errors
-            .scan((acc, val) => {
-                console.log(acc, val);
-                return ++acc;
-            }, 0)
-            .takeWhile(acc => acc < attempts)
-            .delay(delay);
-    }
-}
 
 function renderMovies(movies: { title: string }[]) {
     output.innerHTML = null;
@@ -51,6 +34,16 @@ function renderMovies(movies: { title: string }[]) {
         output.appendChild(div);
     });
 }
+
+let subscription = load('moviess.json').subscribe(
+    renderMovies,
+    err => console.log(`error: ${err}`),
+    () => console.log('complete!')
+);
+
+console.log(subscription);
+subscription.unsubscribe();
+
 
 click.flatMap(e => loadWithFetch("movies.json"))
     .subscribe(
